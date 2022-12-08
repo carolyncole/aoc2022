@@ -1,49 +1,35 @@
 require 'byebug.rb'
 
-def scenic_score_left(map, x, y)
+def scenic_score(map, x, y, range, xmove)
   tree = map[y][x]
   score = 0
-  ((x-1).downto(0)).each do |new_x|
-    other_tree = map[y][new_x]
+  range.each do |new_index|
+    other_tree = if xmove
+                   map[y][new_index]
+                 else
+                   map[new_index][x]
+                 end
     score += 1
     break if other_tree >= tree
   end
   score
+end
+
+def scenic_score_left(map, x, y)
+  scenic_score(map, x, y, (x-1).downto(0), true)
 end
 
 def scenic_score_right(map, x, y)
-  tree = map[y][x]
-  score = 0
-  ((x+1)..(map[y].count-1)).each do |new_x|
-    other_tree = map[y][new_x]
-    score += 1
-    break if other_tree >= tree
-  end
-  score
+  scenic_score(map, x, y, (x+1)..(map[y].count-1), true)
 end
 
 def scenic_score_up(map, x, y)
-  tree = map[y][x]
-  score = 0
-  ((y-1).downto(0)).each do |new_y|
-    other_tree = map[new_y][x]
-    score += 1
-    break if other_tree >= tree
-  end
-  score
+  scenic_score(map, x, y, ((y-1).downto(0)), false)
 end
 
 def scenic_score_down(map, x, y)
-  tree = map[y][x]
-  score = 0
-  ((y+1)..(map.count-1)).each do |new_y|
-    other_tree = map[new_y][x]
-    score += 1
-    break if other_tree >= tree
-  end
-  score
+  scenic_score(map, x, y, ((y+1)..(map.count-1)), false)
 end
-
 
 
 def visible_left(map, x, y)
