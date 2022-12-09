@@ -29,35 +29,49 @@ class Move
 end
 
 class Map
-    attr_reader :tail_positions, :current_head, :current_tail
+    attr_reader :tail_positions, :knot_poisitions, :knot_length
     def initialize
-        @current_head = Node.new(0,0)
-        @tail_positions = [Node.new(0,0)]
+        @knot_poisitions = [Node.new(0,0), Node.new(0,0)]
+        @knot_length = @knot_poisitions.length
+        @tail_positions = [@knot_poisitions[1]]
         @current_tail = @tail_positions[0]
     end
 
     def move_positions(move)
       #puts "== #{move} =="
       (1..move.length).each do 
-        new_head = if move.direction == "R"
-                      Node.new(current_head.x+1, current_head.y)
-                   elsif move.direction == "L"
-                      Node.new(current_head.x-1, current_head.y)
-                    elsif move.direction == "U"
-                      Node.new(current_head.x, current_head.y+1)
-                    elsif move.direction == "D"
-                      Node.new(current_head.x, current_head.y-1)
-                    end
-         new_tail = move_tail(new_head, current_tail)
-         @current_head = new_head
-         new_index = @tail_positions.find_index(new_tail)
-         if new_index.nil?
-           tail_positions <<  new_tail 
-           @current_tail = new_tail
-         else
-           @current_tail = @tail_positions[new_index]  
-         end
-         # puts self
+        new_tail = move_knot_positions(move)
+        new_index = @tail_positions.find_index(new_tail)
+        if new_index.nil?
+          tail_positions <<  new_tail 
+          knot_poisitions[knot_length-1] = new_tail
+        else
+          knot_poisitions[knot_length-1] = @tail_positions[new_index]  
+        end
+        # puts self
+     end
+    end
+    def move_knot_positions(move)
+      current_idx = 0
+      new_head = move_head(move, knot_poisitions[0])
+      knot_poisitions[0] = new_head
+      new_tail = nil #out of loop scope so it is still around after the loop
+      (1..knot_length-1).each do |current_idx|
+        new_tail = move_tail(knot_poisitions[current_idx-1], knot_poisitions[current_idx])
+        knot_poisitions[current_idx] = new_tail
+      end
+      return new_tail
+    end
+
+    def move_head(move, current_head)
+      if move.direction == "R"
+        Node.new(current_head.x+1, current_head.y)
+      elsif move.direction == "L"
+        Node.new(current_head.x-1, current_head.y)
+      elsif move.direction == "U"
+        Node.new(current_head.x, current_head.y+1)
+      elsif move.direction == "D"
+        Node.new(current_head.x, current_head.y-1)
       end
     end
 
