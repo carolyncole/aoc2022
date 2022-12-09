@@ -31,14 +31,17 @@ end
 class Map
     attr_reader :tail_positions, :knot_poisitions, :knot_length
     def initialize
-        @knot_poisitions = [Node.new(0,0), Node.new(0,0)]
+        @knot_poisitions = [Node.new(0,0), Node.new(0,0), Node.new(0,0),
+                            Node.new(0,0), Node.new(0,0), Node.new(0,0),
+                            Node.new(0,0), Node.new(0,0), Node.new(0,0),
+                            Node.new(0,0)]
         @knot_length = @knot_poisitions.length
-        @tail_positions = [@knot_poisitions[1]]
+        @tail_positions = [@knot_poisitions[@knot_length-1]]
         @current_tail = @tail_positions[0]
     end
 
     def move_positions(move)
-      #puts "== #{move} =="
+      puts "== #{move} =="
       (1..move.length).each do 
         new_tail = move_knot_positions(move)
         new_index = @tail_positions.find_index(new_tail)
@@ -48,7 +51,7 @@ class Map
         else
           knot_poisitions[knot_length-1] = @tail_positions[new_index]  
         end
-        # puts self
+        puts self
      end
     end
     def move_knot_positions(move)
@@ -98,7 +101,7 @@ class Map
     end
 
     def to_s
-      "head: #{current_head} tail: #{current_tail}"
+      knot_poisitions.join(", ")
     end
 end
 
