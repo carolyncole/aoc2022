@@ -62,28 +62,6 @@ end
 
 
 
-
-# data_grid = data.map{|row| row.split("").map(&:to_i)}
-# max_row = data.length-1
-# max_col = data.first.length-1
-# new_grid = []
-# 5.times do |row_multiplier|
-#   5.times do |col_multiplier|
-#     data_grid.each_with_index do |row, row_idx| 
-#                   new_grid << [] if col_multiplier == 0
-#                   row.each_with_index do |value, col_idx|
-#                     new_value = row_multiplier+col_multiplier+value
-#                     new_value = new_value % 9 if new_value > 9
-#                     new_grid[(max_row+1)*row_multiplier+row_idx][(max_col+1)*col_multiplier+col_idx] = new_value
-#                  end
-#                end
-#   end
-# end
-
-# puts new_grid.map{|row| row.join("")}.join("\n")
-
-#####  Above code from last year Day 15 ### 
-
 def construct_edges(map_grid)
   edges = {}
   max_row = map_grid.length-1
