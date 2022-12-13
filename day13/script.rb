@@ -4,10 +4,7 @@ require 'json'
 def correct_order?(pair_str)
   pair_strs = pair_str.split("\n")
   pairs = pair_strs.map{|pair| JSON.parse pair}
-  puts "-------"
   result =  pair_in_correct_order(pairs[0],pairs[1])
-  puts "result: #{result}"
-  puts "-------"
   result[:result]
 end
 
@@ -33,7 +30,7 @@ def pair_in_correct_order(part1, part2)
     result = pair_in_correct_order(value1, value2)
     return result unless result[:continue]
   end
-  {continue: true, result: true}
+  {continue: part2.length <= part1.length, result: true}
 end
 
 pairs = File.read("input.txt").split("\n\n")
