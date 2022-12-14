@@ -42,3 +42,18 @@ correct_order.each_with_index do |correct, index|
 end
 
 puts sum_indicies
+
+lines = File.read("input.txt").split("\n").reject(&:empty?)
+
+puts lines.count
+lines.append("[[2]]").append("[[6]]")
+puts lines.count
+lines
+parts = lines.map{|part| JSON.parse part}
+sorted_parts = parts.sort do |part1,part2| 
+  result = pair_in_correct_order(part1, part2)
+  result[:result] ? -1 : 1
+end
+start_index = sorted_parts.index(JSON.parse "[[2]]")
+end_index = sorted_parts.index(JSON.parse "[[6]]")
+puts (start_index+1)*(end_index+1)
